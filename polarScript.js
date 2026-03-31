@@ -101,11 +101,6 @@ function createPage() {
         kertas.appendChild(slot);
     }
 
-    const kode = document.createElement('div');
-    kode.className = 'kode-unik';
-    kode.id = `kode-${id}`;
-    kertas.appendChild(kode);
-
     const footer = document.createElement('div');
     footer.className = 'kertas-footer';
     footer.style.position = 'relative';
@@ -438,13 +433,8 @@ inputFoto.addEventListener('change', (e) => {
 });
 
 // ==========================================
-// 5. SISTEM DOWNLOAD & PDF
+// 5. SISTEM DOWNLOAD & PDF (DIPERBARUI)
 // ==========================================
-function dapatkanKodeUnik() {
-    const d = new Date();
-    const pad = n => n.toString().padStart(2, '0');
-    return `${pad(d.getDate())}-${pad(d.getMonth()+1)}-${d.getFullYear()}-${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
-}
 
 function bersihkanKertasUntukRender(kertas, format) {
     Object.keys(modeKonfig).forEach(k => { 
@@ -491,8 +481,9 @@ function simpanSatuKertas(format, btnId) {
     tombol.style.pointerEvents = 'none';
 
     const kertas = document.getElementById(`kertas-${activePageId}`);
-    const kodeStr = dapatkanKodeUnik();
-    document.getElementById(`kode-${activePageId}`).innerText = kodeStr;
+    
+    // Gunakan timestamp untuk nama file saja, tidak dicetak di kertas
+    const timestamp = Date.now();
 
     const rect = kertas.getBoundingClientRect();
     const gayaAsli = kertas.getAttribute('style') || '';
@@ -505,7 +496,7 @@ function simpanSatuKertas(format, btnId) {
         scale: 4, useCORS: true, backgroundColor: format === 'png' ? null : '#ffffff' 
     }).then(canvas => {
         const link = document.createElement('a');
-        link.download = `Polaroid_${kodeStr}.${format}`;
+        link.download = `Polaroid_${timestamp}.${format}`;
         link.href = canvas.toDataURL(`image/${format}`, 1.0);
         link.click();
     }).finally(() => {
@@ -525,13 +516,13 @@ document.getElementById('btnDownloadPDF').addEventListener('click', async functi
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const kodeStr = dapatkanKodeUnik();
+    
+    // Gunakan timestamp untuk nama file
+    const timestamp = Date.now();
 
     for (let i = 0; i < pages.length; i++) {
         const pageId = pages[i].id;
         const kertas = document.getElementById(`kertas-${pageId}`);
-        
-        document.getElementById(`kode-${pageId}`).innerText = `Hal ${i+1} - ID: ${kodeStr}`;
 
         const rect = kertas.getBoundingClientRect();
         const gayaAsli = kertas.getAttribute('style') || '';
@@ -551,7 +542,7 @@ document.getElementById('btnDownloadPDF').addEventListener('click', async functi
         terapkanWarnaVisual(pageId);
     }
 
-    pdf.save(`Order_Massal_${kodeStr}.pdf`);
+    pdf.save(`Order_Massal_${timestamp}.pdf`);
     tombol.innerHTML = teksAsli;
     tombol.style.pointerEvents = 'auto';
 });
