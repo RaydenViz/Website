@@ -1,0 +1,203 @@
+:root {
+    --warna-latar: #f1f5f9; --warna-teks: #1e293b; --warna-aksen: #4f46e5;
+    --kaca-bg: rgba(255, 255, 255, 0.85); --kaca-border: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] {
+    --warna-latar: #0f172a; --warna-teks: #f8fafc; --warna-aksen: #818cf8;
+    --kaca-bg: rgba(30, 41, 59, 0.85); --kaca-border: rgba(255, 255, 255, 0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+/* Body bebas scroll untuk SEMUA perangkat */
+body { background: var(--warna-latar); color: var(--warna-teks); transition: 0.3s; min-height: 100vh; overflow-x: hidden; }
+
+.bg-blur { position: fixed; top: -10%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--warna-aksen) 0%, transparent 70%); opacity: 0.1; filter: blur(100px); z-index: -1; }
+
+.container { display: flex; flex-direction: column; width: 100%; max-width: 1400px; min-height: 100vh; margin: 0 auto; padding: 15px; gap: 20px; }
+
+/* Sidebar & Steps (Default untuk HP/Tablet) */
+.sidebar { width: 100%; background: var(--kaca-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--kaca-border); border-radius: 24px; padding: 25px; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+[data-theme="dark"] .sidebar { box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.header h1 { font-size: 1.4rem; font-weight: 800; }
+.subtitle { font-size: 0.8rem; opacity: 0.6; margin-top: 2px; }
+.btn-icon { background: rgba(0,0,0,0.05); border: none; color: inherit; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; transition: 0.2s; }
+[data-theme="dark"] .btn-icon { background: rgba(255,255,255,0.1); }
+.btn-icon:hover { transform: scale(1.1); }
+
+.steps-container { display: flex; flex-direction: column; gap: 15px; }
+.step-box { background: rgba(255,255,255,0.3); border: 1px solid var(--kaca-border); border-radius: 18px; padding: 18px; }
+[data-theme="dark"] .step-box { background: rgba(0,0,0,0.2); }
+.step-header { display: flex; align-items: center; margin-bottom: 12px; }
+.step-header h2 { font-size: 1.05rem; font-weight: 700; display:flex; gap: 8px; align-items: center;}
+
+.price-badge { background: rgba(79, 70, 229, 0.1); color: var(--warna-aksen); padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 15px; border: 1px dashed var(--warna-aksen); line-height: 1.4; }
+[data-theme="dark"] .price-badge { background: rgba(255,255,255,0.05); }
+#totalPrice { font-weight: 800; font-size: 1.4rem; }
+#zipInfo { font-size: 0.8rem; opacity: 0.8; font-weight: 600; }
+.mini-guide { margin-left: 18px; font-size: 0.8rem; opacity: 0.85; line-height: 1.6; }
+
+/* Buttons Controls */
+.button-group { display: flex; flex-direction: column; gap: 10px; }
+.btn-utama, .btn-kedua, .btn-pdf { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; }
+.btn-utama { background: var(--warna-aksen); color: white; }
+.btn-utama:hover { filter: brightness(1.1); }
+.btn-kedua { background: #64748b; color: white; }
+.btn-kedua:hover { background: #475569; }
+.btn-pdf { background: #e11d48; color: white; margin-top: 5px; }
+.btn-pdf:hover { background: #be123c; }
+
+/* Preview Area & Multi-Kertas */
+.preview-area { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 5px; gap: 40px; width: 100%; }
+
+.kertas-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; transition: 0.4s ease; opacity: 0.5; filter: grayscale(80%); }
+.kertas-wrapper.active-page { opacity: 1; filter: none; }
+
+.kertas-header { width: 100%; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px; opacity: 0; pointer-events: none; transition: 0.3s; }
+.kertas-wrapper.active-page .kertas-header { opacity: 1; pointer-events: auto; }
+
+.color-controls { display: flex; gap: 8px; align-items: center; background: var(--kaca-bg); backdrop-filter: blur(10px); padding: 8px 12px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid var(--kaca-border); }
+.pilih-bingkai { border: 1px solid #ccc; border-radius: 8px; padding: 6px; font-weight: bold; background: white; color: #333; cursor: pointer; outline: none; font-size: 0.8rem; }
+.opsi-warna { display: flex; gap: 6px; }
+.opsi-warna input[type="color"] { width: 30px; height: 30px; border: none; border-radius: 6px; cursor: pointer; background: none; }
+.btn-rotate { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; width: 30px; height: 30px; cursor: pointer; color: #475569; }
+
+.btn-hapus-kertas { background: #fee2e2; color: #ef4444; border: 1px solid #f87171; padding: 8px 12px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; cursor: pointer; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15); display: none; transition: 0.2s;}
+.btn-hapus-kertas:hover { filter: brightness(0.9); }
+
+.kertas-footer { width: 100%; margin-top: 15px; opacity: 0; pointer-events: none; transition: 0.3s; }
+.kertas-wrapper.active-page .kertas-footer { opacity: 1; pointer-events: auto; }
+.btn-tambah { width: 100%; background: rgba(79, 70, 229, 0.1); color: var(--warna-aksen); border: 2px dashed var(--warna-aksen); padding: 12px; border-radius: 12px; font-weight: bold; font-size: 0.95rem; cursor: pointer; transition: 0.2s; }
+.btn-tambah:hover { background: var(--warna-aksen); color: white; }
+
+/* Kertas A4 & Polaroid 2R Strict Constraint */
+.kertas-a4 { 
+    width: 100%; aspect-ratio: 210/297; background: white; position: relative; cursor: pointer; transition: 0.3s;
+    display: grid; grid-template-columns: repeat(3, 1fr); align-content: space-evenly; gap: 3%; padding: 4%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 4px solid transparent; border-radius: 2px;
+}
+.kertas-wrapper.active-page .kertas-a4 { border-color: var(--warna-aksen); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2), 0 25px 50px rgba(0,0,0,0.25); transform: scale(1.02); }
+.kode-unik { position: absolute; bottom: 8px; right: 12px; font-size: 8px; font-family: monospace; color: #94a3b8; font-weight: bold; pointer-events: none; z-index: 50;}
+
+.kotak-polaroid { 
+    aspect-ratio: 2 / 3; width: 100%; height: auto; 
+    background: white; padding: 6% 6% 22% 6%; border: 1px solid rgba(0,0,0,0.15); 
+    display: flex; flex-direction: column; position: relative; overflow: hidden; transition: 0.2s; 
+}
+.kotak-polaroid:hover { transform: translateY(-2px) scale(1.01); z-index: 5; box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+.kotak-polaroid.mode-konfig { outline: 3px dashed var(--warna-aksen); outline-offset: -3px; z-index: 10; }
+
+/* Menu Konfigurasi Foto (Gear & Trash) */
+.konfig-menu { position: absolute; top: 6%; right: 6%; display: flex; gap: 6px; z-index: 20; }
+.btn-konf { width: 26px; height: 26px; font-size: 0.8rem; border-radius: 50%; background: rgba(255,255,255,0.95); border: 1px solid #cbd5e1; cursor: pointer; display: none; align-items: center; justify-content: center; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; }
+.btn-konf:hover { transform: scale(1.1); }
+.btn-konf.aktif { background: var(--warna-aksen); color: white; border-color: var(--warna-aksen); }
+.btn-hapus-foto { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+.btn-hapus-foto:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+.area-foto { flex: 1; width: 100%; height: 100%; background: #f1f5f9; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; cursor: pointer; }
+.area-foto img { max-width: 100%; max-height: 100%; width: auto; height: auto; display: none; transform-origin: center center; will-change: transform; user-select: none; -webkit-user-drag: none; }
+.teks-tambah { color: #94a3b8; font-size: 0.75rem; text-align: center; pointer-events: none; }
+.teks-tambah i { font-size: 1.3rem; margin-bottom: 5px; color: #cbd5e1; }
+
+/* ================================================= */
+/* LAYOUT DESKTOP: TEKNIK STICKY SIDEBAR (DI BAWAH)  */
+/* ================================================= */
+@media (min-width: 900px) { 
+    .container { flex-direction: row; padding: 25px; align-items: flex-start; } 
+    
+    /* Panel kiri dikunci ukurannya dan menempel */
+    .sidebar { width: 350px !important; flex-shrink: 0; position: sticky; top: 25px; max-height: calc(100vh - 50px); overflow-y: auto; }
+    
+    /* Area kertas didorong agar bebas bernapas di kanan */
+    .preview-area { flex: 1; padding: 0 40px !important; overflow: visible; }
+}
+
+/* ================================================= */
+/* SOCIAL MEDIA FOOTER (KONTAK)                      */
+/* ================================================= */
+.social-footer {
+    margin-top: auto; /* Mendorong footer ke bagian paling bawah panel */
+    padding-top: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-top: 1px dashed var(--kaca-border);
+}
+
+.social-footer p {
+    font-size: 0.85rem;
+    font-weight: 700;
+    opacity: 0.7;
+    margin-bottom: 12px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efek membal */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.social-links a:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+}
+
+/* Warna Khas Brand */
+.soc-wa { background: #25D366; }
+.soc-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.soc-web { background: #3b82f6; }
+
+/* ================================================= */
+/* METODE PEMBAYARAN BADGES (FINAL)                  */
+/* ================================================= */
+.payment-section {
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--kaca-border);
+}
+
+.payment-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    opacity: 0.8;
+}
+
+.payment-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.badge {
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Warna Khusus QRIS dan Cash */
+.badge.qris { background: #ed2a26; }
+.badge.cash { background: #e6ae05; } /* Hijau Emerald untuk Cash */
