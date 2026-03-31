@@ -291,6 +291,9 @@ function pasangEventInteraksi(pageId) {
             area.style.cursor = modeKonfig[key] ? 'grab' : 'pointer';
         });
 
+        // ==========================================
+        // PROSES MENGHAPUS FOTO
+        // ==========================================
         delBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -298,6 +301,9 @@ function pasangEventInteraksi(pageId) {
             img.removeAttribute('src');
             img.style.display = 'none';
             img.previousElementSibling.style.display = 'block'; 
+            
+            // KEMBALIKAN LATAR ABU-ABU SAAT DIHAPUS
+            area.style.background = ''; 
             
             modeKonfig[key] = false;
             slotDiv.classList.remove('mode-konfig');
@@ -364,7 +370,6 @@ function pasangEventInteraksi(pageId) {
     }
 }
 
-// Eksekutor Global Drag/Zoom
 window.addEventListener('mousemove', (e) => {
     if (sedangDragFoto && indexDragAktif && modeKonfig[indexDragAktif]) {
         statusFoto[indexDragAktif].x = e.clientX - koordinatAwalX;
@@ -402,7 +407,9 @@ window.addEventListener('touchend', () => {
     indexDragAktif = null; 
 });
 
-// Proses Upload Foto
+// ==========================================
+// PROSES UPLOAD FOTO
+// ==========================================
 inputFoto.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file && slotAktif.pageId !== null) {
@@ -411,6 +418,7 @@ inputFoto.addEventListener('change', (e) => {
             const key = `${slotAktif.pageId}-${slotAktif.slotIdx}`;
             const img = document.getElementById(`img-${key}`);
             const btnKonfig = document.getElementById(`gear-${key}`);
+            const area = document.getElementById(`area-${key}`);
             
             if (!img.getAttribute('src')) {
                 totalUploadedPhotos++;
@@ -421,6 +429,9 @@ inputFoto.addEventListener('change', (e) => {
             img.style.display = 'block';
             img.previousElementSibling.style.display = 'none';
             btnKonfig.style.display = 'flex'; 
+            
+            // HILANGKAN LATAR ABU-ABU SAAT FOTO MUNCUL
+            area.style.background = 'transparent';
             
             statusFoto[key] = { x: 0, y: 0, scale: 1 };
             img.style.transform = `translate(0px, 0px) scale(1)`;
@@ -466,11 +477,18 @@ function pulihkanKertasSetelahRender(kertas) {
     kertas.style.boxShadow = '';
     kertas.style.border = '';
     
+    // PERBAIKAN BUG PDF: Mengecek apakah kotak ada fotonya atau tidak
     kertas.querySelectorAll('.area-foto').forEach(area => {
-        area.style.background = '';
         const img = area.querySelector('img');
         const teks = area.querySelector('.teks-tambah');
-        if (teks && (!img || !img.getAttribute('src'))) teks.style.display = 'block';
+        
+        if (img && img.getAttribute('src') && img.style.display !== 'none') {
+            area.style.background = 'transparent'; // Tetap transparan jika ada foto
+            if (teks) teks.style.display = 'none';
+        } else {
+            area.style.background = ''; // Kembali abu-abu jika kosong
+            if (teks) teks.style.display = 'block';
+        }
     });
 }
 
@@ -481,8 +499,6 @@ function simpanSatuKertas(format, btnId) {
     tombol.style.pointerEvents = 'none';
 
     const kertas = document.getElementById(`kertas-${activePageId}`);
-    
-    // Gunakan timestamp untuk nama file saja, tidak dicetak di kertas
     const timestamp = Date.now();
 
     const rect = kertas.getBoundingClientRect();
@@ -516,8 +532,6 @@ document.getElementById('btnDownloadPDF').addEventListener('click', async functi
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'a4');
-    
-    // Gunakan timestamp untuk nama file
     const timestamp = Date.now();
 
     for (let i = 0; i < pages.length; i++) {
