@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayden Viz Polaroid</title>
+    <link rel="icon" type="image/png" sizes="512x512" href="../image/branding/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="bg-blur"></div>
+
+    <div class="container">
+        <aside class="sidebar glass">
+            <header class="header">
+                <div>
+                    <h1>📸 Cetak Polaroid</h1>
+                    <p class="subtitle">Kualitas Cetak 2R (Kertas A4)</p>
+                </div>
+                <button id="themeToggle" class="btn-icon" title="Ganti Tema"><i class="fas fa-moon"></i></button>
+            </header>
+
+            <div class="steps-container">
+                <div class="step-box">
+                    <div class="step-header">
+                        <h2><i class="fas fa-wallet"></i> Total Tagihan</h2>
+                    </div>
+
+                    <div id="priceSummary" class="price-badge">
+                        <span id="totalPrice">Rp5.000</span><br>
+                        <small id="zipInfo">(+ 1 Plastik Zip Rp500)</small>
+                    </div>
+
+                    <ul class="mini-guide">
+                        <li><b>Putih Polos:</b> Rp4.500 / A4</li>
+                        <li><b>Warna Solid:</b> Rp7.500 / A4</li>
+                        <li><b>Gradasi:</b> Rp9.000 / A4</li>
+                        <li><b>Plastik Zip:</b> Rp500 / 50 Foto</li>
+                    </ul>
+
+                    <div class="payment-section">
+                        <p class="payment-title">Metode Pembayaran:</p>
+                        <div class="payment-badges">
+                            <span class="badge qris"><i class="fas fa-qrcode"></i> QRIS</span>
+                            <span class="badge cash"><i class="fas fa-money-bill-wave"></i> CASH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <div class="step-header">
+                        <h2><i class="fas fa-info-circle"></i> Petunjuk</h2>
+                    </div>
+                    <div class="petunjuk-teks">
+                        <ul class="mini-guide">
+                            <li>Klik pada kertas untuk menjadikannya <b>Halaman Aktif</b>.</li>
+                            <li>Klik kotak foto untuk <b>Upload</b>.</li>
+                            <li>Klik ikon <b>⚙️</b> untuk <b>Geser/Zoom</b> foto.</li>
+                            <li>Pengaturan warna bingkai ada di kiri atas tiap kertas.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <div class="step-header">
+                        <h2><i class="fas fa-print"></i> Simpan & Cetak</h2>
+                    </div>
+                    <div class="button-group" id="btnGroupSingle">
+                        <button id="btnDownloadJPG" class="btn-utama"><i class="fas fa-file-download"></i> JPG (Hal.
+                            Aktif)</button>
+                        <button id="btnDownloadPNG" class="btn-kedua"><i class="fas fa-file-image"></i> PNG (Hal.
+                            Aktif)</button>
+                    </div>
+                    <button id="btnDownloadPDF" class="btn-pdf" style="display:none;"><i class="fas fa-file-pdf"></i>
+                        Download Semua (PDF)</button>
+                </div>
+            </div>
+
+            <div class="social-footer">
+                <p>Kirim File & Hubungi:</p>
+                <div class="social-links">
+                    <a href="https://wa.me/6285657210492?text=Mau+cetak+foto+polaroid" target="_blank" class="soc-wa"
+                        title="WhatsApp Kami"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/rayden.viz/" target="_blank" class="soc-ig"
+                        title="Instagram Kami"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.raydenviz.my.id" target="_blank" class="soc-web" title="Website Kami"><i
+                            class="fas fa-globe"></i></a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="preview-area" id="previewContainer">
+        </main>
+    </div>
+
+    <input type="file" id="inputFoto" accept="image/*" hidden>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
